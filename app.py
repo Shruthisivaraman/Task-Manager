@@ -128,6 +128,51 @@ def delete(id):
     return redirect(url_for('dashboard'))
 
 
+@app.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    if request.method == 'POST':
+        old_password = request.form.get('old_password')
+        new_password = request.form.get('new_password')
+        confirm_password = request.form.get('confirm_password')
+
+        # Verify old password
+        if not old_password or current_user.password != old_password:
+            return render_template('profile.html', error='Old password is incorrect')
+
+        # Check if new passwords match
+        if new_password != confirm_password:
+            return render_template('profile.html', error='New passwords do not match')
+
+        # Check if new password is not empty
+        if not new_password:
+            return render_template('profile.html', error='New password cannot be empty')
+
+        # Update password
+        current_user.password = new_password
+        db.session.commit()
+        return render_template('profile.html', success='Password updated successfully!')
+
+    return render_template('profile.html', username=current_user.username)
+
+
+@app.route('/summary')
+@login_required
+def summary():
+    # Get all tasks for the current user
+    all_tasks = Task.query.filter_by(user_id=current_user.id).all()
+    
+    # Calculate statistics
+    total_tasks = len(all_tasks)
+    completed_tasks = len([task for task in all_tasks if task.status == 'Completed'])
+    pending_tasks = len([task for task in all_tasks if task.status == 'Pending'])
+    
+    return render_template('summary.html', 
+                         total_tasks=total_tasks,
+                         completed_tasks=completed_tasks,
+                         pending_tasks=pending_tasks)
+
+
 @app.route('/logout')
 @login_required
 def logout():

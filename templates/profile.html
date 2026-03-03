@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3>User Profile</h3>
+
+<div class="profile-section">
+    <div class="user-info-card card">
+        <h4>Account Information</h4>
+        <p><strong>Username:</strong> <span class="username">{{ username }}</span></p>
+    </div>
+
+    {% if success %}
+    <div class="alert alert-success">
+        {{ success }}
+    </div>
+    {% endif %}
+
+    {% if error %}
+    <div class="alert alert-error">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <div class="password-update-card card">
+        <h4>Update Password</h4>
+        <form method="POST">
+            <div class="form-group">
+                <label for="old_password">Current Password:</label>
+                <input type="password" id="old_password" name="old_password" placeholder="Enter your current password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="new_password">New Password:</label>
+                <input type="password" id="new_password" name="new_password" placeholder="Enter your new password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password">Confirm New Password:</label>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your new password" required>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">Update Password</button>
+                <a href="/dashboard" class="btn btn-secondary">Back to Dashboard</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="logout-section">
+        <a href="/logout" class="btn btn-danger">Logout</a>
+    </div>
+</div>
+
+<style>
+    .profile-section {
+        max-width: 600px;
+    }
+
+    .user-info-card,
+    .password-update-card {
+        margin-bottom: 20px;
+    }
+
+    .user-info-card h4,
+    .password-update-card h4 {
+        color: #667eea;
+        margin-bottom: 15px;
+        font-size: 18px;
+    }
+
+    .user-info-card p {
+        font-size: 16px;
+        margin: 10px 0;
+    }
+
+    .username {
+        color: #764ba2;
+        font-weight: 600;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .logout-section {
+        padding-top: 20px;
+        border-top: 2px solid #e0e0e0;
+        margin-top: 20px;
+    }
+
+    .alert {
+        padding: 15px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        font-weight: 500;
+    }
+
+    .alert-success {
+        background-color: #d4edda;
+        border: 2px solid #28a745;
+        color: #155724;
+    }
+
+    .alert-error {
+        background-color: #f8d7da;
+        border: 2px solid #dc3545;
+        color: #721c24;
+    }
+</style>
+
+{% endblock %}
